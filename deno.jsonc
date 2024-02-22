@@ -1,0 +1,22 @@
+{
+  "tasks": {
+    "savelist": "deno run --env --allow-env --allow-net --allow-read --allow-write saveList.ts",
+    "dev": "deno run --watch --env --allow-env --allow-net --allow-read main.ts"
+  },
+  "imports": {
+    "hono/": "https://deno.land/x/hono@v4.0.4/",
+    "hono/jsx/jsx-runtime": "https://deno.land/x/hono@v4.0.4/jsx/jsx-runtime.ts",
+    "hono/jsx/dom/jsx-runtime": "https://deno.land/x/hono@v4.0.4/jsx/dom/jsx-runtime.ts",
+    "canvas/": "https://deno.land/x/canvas@v1.4.1/"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "types": [
+      "./type.d.ts"
+    ]
+  },
+  "exclude": [
+    "./static/"
+  ]
+}
