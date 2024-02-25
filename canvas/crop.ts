@@ -1,9 +1,9 @@
 import { int, Rect, Source } from "./util.ts";
 
-const crop = <T>(
-  source: Source<T> & { crop?: Rect },
+const crop = <R extends Rect & { crop?: Rect }>(
+  source: R,
   ratio = 16 / 9,
-): Source<T> => {
+): R => {
   const { x = 0, y = 0, w, h } = source.crop ?? source;
   const res: Rect = { x, y, w, h };
   if (w / h > ratio) {

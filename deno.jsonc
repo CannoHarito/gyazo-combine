@@ -1,7 +1,8 @@
 {
   "tasks": {
     "savelist": "deno run --env --allow-env --allow-net --allow-read --allow-write saveList.ts",
-    "dev": "deno run --watch --env --allow-env --allow-net --allow-read main.ts"
+    "dev": "deno run --watch --env --allow-env --allow-net --allow-read main.ts",
+    "check": "deno fmt --check&&deno lint"
   },
   "imports": {
     "hono/": "https://deno.land/x/hono@v4.0.4/",
@@ -17,6 +18,7 @@
     ]
   },
   "exclude": [
-    "./static/"
+    "./static/",
+    "./images.json"
   ]
 }

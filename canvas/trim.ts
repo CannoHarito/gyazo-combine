@@ -8,12 +8,21 @@ const countKoro = <T>(ctx: CanvasContext2D<T>, rect: Rect) => {
   }
   return kuro;
 };
+// 16:9比のゲームウィンドウの枠を、16n+2:9n+32かどうかで判定
+const hasWindow = (
+  source: Rect & { trim?: Rect },
+  { ratio = 16 / 9 } = {},
+): boolean => {
+  const { w, h } = source.trim ?? source;
+  return ((w - 2) - (h - 32) * ratio) ** 2 < 2;
+};
 const getTrim = <T>(
   ctx: CanvasContext2D<T>,
   source: Source<T>,
   { max = 300 } = {},
 ) => {
   if (source.type != "image") return { top: 0, left: 0 };
+  if (hasWindow(source)) return { top: 31, left: 1, right: 1, bottom: 1 };
   const { image, w, h } = source;
 
   const rectH = { w: max, h: 1 };
@@ -25,16 +34,16 @@ const getTrim = <T>(
   const top = countKoro(ctx, rectV);
   return { top, left };
 };
-const setTrim = <T>(
-  source: Source<T> & { trim?: Rect },
-  { top = 0, left = 0 },
-): Source<T> => {
+const setTrim = <S extends Source<unknown> & { trim?: Rect }>(
+  source: S,
+  { top = 0, left = 0, right = 0, bottom = 0 },
+): S => {
   if (source.type != "image") return source;
   const { w, h } = source.trim ?? source;
   return Object.assign(
     source,
-    { x: left, y: top, w: w - left, h: h - top },
-    { trim: { top, left, w, h } as Rect },
+    { x: left, y: top, w: w - left - right, h: h - top - bottom },
+    { trim: { top, left, w, h, right, bottom } as Rect },
   );
 };
 const trimAll = <T>(
