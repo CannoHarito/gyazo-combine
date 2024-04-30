@@ -32,7 +32,20 @@ const getTrim = <T>(
   const left = countKoro(ctx, rectH);
   ctx.drawImage(image, ...vals(rectV, { x: int(w * 0.3) }), ...vals(rectV));
   const top = countKoro(ctx, rectV);
-  return { top, left };
+  ctx.drawImage(
+    image,
+    ...vals({ x: w, y: int(h * 0.7), h: 1, w: -max }),
+    ...vals(rectH),
+  );
+  const right = countKoro(ctx, rectH);
+  ctx.drawImage(
+    image,
+    ...vals({ x: int(w * 0.7), y: h, w: 1, h: -max }),
+    ...vals(rectV),
+  );
+  const bottom = countKoro(ctx, rectV);
+
+  return { top, left, right, bottom };
 };
 const setTrim = <S extends Source<unknown> & { trim?: Rect }>(
   source: S,
