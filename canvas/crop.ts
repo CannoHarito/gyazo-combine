@@ -7,11 +7,11 @@ const crop = <R extends Rect & { crop?: Rect }>(
   const { x = 0, y = 0, w, h } = source.crop ?? source;
   const res: Rect = { x, y, w, h };
   if (w / h > ratio) {
-    res.w = int(source.h * ratio);
-    res.x = (source.x ?? 0) + int((source.w - res.w) / 2);
+    res.w = int(h * ratio);
+    res.x = x + int((w - res.w) / 2);
   } else {
-    res.h = int(source.w / ratio);
-    res.y = (source.y ?? 0) + int((source.h - res.h) / 2);
+    res.h = int(w / ratio);
+    res.y = y + int((h - res.h) / 2);
   }
   return Object.assign(source, res, { crop: { ratio, x, y, w, h } as Rect });
 };

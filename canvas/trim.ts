@@ -4,7 +4,7 @@ const countKoro = <T>(ctx: CanvasContext2D<T>, rect: Rect) => {
   const data = ctx.getImageData(...vals(rect)).data;
   let kuro = 0;
   for (let i = 0; i < data.length; i += 4, kuro++) {
-    if (data[i] > 1 || data[i + 1] > 1 || data[i + 2] > 1) break;
+    if (data[i] > 5 || data[i + 1] > 5 || data[i + 2] > 5) break;
   }
   return kuro;
 };
@@ -32,7 +32,20 @@ const getTrim = <T>(
   const left = countKoro(ctx, rectH);
   ctx.drawImage(image, ...vals(rectV, { x: int(w * 0.3) }), ...vals(rectV));
   const top = countKoro(ctx, rectV);
-  return { top, left };
+  ctx.drawImage(
+    image,
+    ...vals({ x: w, y: int(h * 0.7), h: 1, w: -max }),
+    ...vals(rectH),
+  );
+  const right = countKoro(ctx, rectH);
+  ctx.drawImage(
+    image,
+    ...vals({ x: int(w * 0.7), y: h, w: 1, h: -max }),
+    ...vals(rectV),
+  );
+  const bottom = countKoro(ctx, rectV);
+
+  return { top, left, right, bottom };
 };
 const setTrim = <S extends Source<unknown> & { trim?: Rect }>(
   source: S,
