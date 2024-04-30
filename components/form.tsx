@@ -63,7 +63,16 @@ export default function Form() {
                   type="checkbox"
                   name="trim"
                   checked
-                />左側と上側を検査する
+                />4方向から検査する
+              </label>
+            </div>
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  name="trim-cache"
+                  checked
+                />検査結果をキャッシュ
               </label>
             </div>
           </fieldset>

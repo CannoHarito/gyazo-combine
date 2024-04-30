@@ -4,6 +4,7 @@ interface Params {
   height: number;
   color: string;
   trim: boolean;
+  trimCache: boolean;
   crop: number;
   // pattern: string;
   // gap: number;
@@ -30,6 +31,8 @@ const getParams = (query: Record<string, string>): Params => {
   // );
   const color = query.color && validColorCode(query.color) || "#ffffff";
   const trim = query.trim && "off" != query.trim || false;
+  const trimCache = query["trim-cache"] && "off" != query["trim-cache"] ||
+    false;
   let crop = 0;
   if ("r" == query.crop) {
     crop = +(query["crop-r-w"] ?? 1) / +(query["crop-r-h"] ?? 1);
@@ -41,7 +44,7 @@ const getParams = (query: Record<string, string>): Params => {
   }
   // const gap = +(query.gap ?? query.g ?? 0);
   // return { name, width, height, color, gap };
-  return { name, width, height, color, trim, crop };
+  return { name, width, height, color, trim, trimCache, crop };
 };
 const parseIds = (idStr: string): string[][] =>
   idStr.replaceAll("\r\n", "\n").replace(/(\n?;)?\n?$/, "")

@@ -18,7 +18,8 @@ async (colIds: string[][], init: Params) => {
   if (init.trim) {
     const max = 300;
     const ctx = createCanvas(max, max).getContext("2d");
-    trimAll(ctx, colSources.flat(), { max });
+    const cache = init.trimCache ?? true;
+    trimAll(ctx, colSources.flat(), { max, cache });
   }
   if (init.crop) {
     cropAll(colSources.flat(), init.crop);
