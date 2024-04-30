@@ -4,7 +4,7 @@ const countKoro = <T>(ctx: CanvasContext2D<T>, rect: Rect) => {
   const data = ctx.getImageData(...vals(rect)).data;
   let kuro = 0;
   for (let i = 0; i < data.length; i += 4, kuro++) {
-    if (data[i] > 1 || data[i + 1] > 1 || data[i + 2] > 1) break;
+    if (data[i] > 5 || data[i + 1] > 5 || data[i + 2] > 5) break;
   }
   return kuro;
 };
