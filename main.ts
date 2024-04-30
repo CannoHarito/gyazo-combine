@@ -12,7 +12,7 @@ import upload from "./routes/upload.tsx";
 const app = new Hono();
 
 app.use(renderer);
-app.get("favicon.svg", serveStatic({ path: "./static/favicon.svg" }));
+app.get("favicon.svg", serveStatic({ path: "./static/favicon.min.svg" }));
 app.get("favicon.ico", serveStatic({ path: "./static/favicon.ico" }));
 app.use("/static/*", serveStatic({ root: "./" }));
 app.get("/upload", ...upload);
