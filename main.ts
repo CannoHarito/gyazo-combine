@@ -1,6 +1,6 @@
 import { Hono } from "hono/mod.ts";
 import { serveStatic } from "hono/middleware.ts";
-import { showRoutes } from "hono/helper.ts";
+// import { showRoutes } from "hono/helper.ts";
 
 import renderer from "./routes/_renderer.tsx";
 import indexApp from "./routes/index.tsx";
@@ -21,9 +21,10 @@ app.route("/render", renderApp);
 app.route("/auth", authApp);
 app.route("/", indexApp);
 
-export default app;
+// export default app;
+export default { fetch: (req: Request) => app.fetch(req) };
 
-if (import.meta.main) {
-  showRoutes(app);
-  Deno.serve(app.fetch);
-}
+// if (import.meta.main) {
+//   showRoutes(app);
+//   Deno.serve(app.fetch);
+// }
