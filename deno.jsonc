@@ -5,9 +5,9 @@
     "check": "deno fmt --check&&deno lint"
   },
   "imports": {
-    "hono/": "https://deno.land/x/hono@v4.0.4/",
-    "hono/jsx/jsx-runtime": "https://deno.land/x/hono@v4.0.4/jsx/jsx-runtime.ts",
-    "hono/jsx/dom/jsx-runtime": "https://deno.land/x/hono@v4.0.4/jsx/dom/jsx-runtime.ts",
+    "hono/": "https://deno.land/x/hono@v4.3.6/",
+    "hono/jsx/jsx-runtime": "https://deno.land/x/hono@v4.3.6/jsx/jsx-runtime.ts",
+    "hono/jsx/dom/jsx-runtime": "https://deno.land/x/hono@v4.3.6/jsx/dom/jsx-runtime.ts",
     "canvas/": "https://deno.land/x/canvas@v1.4.1/"
   },
   "compilerOptions": {

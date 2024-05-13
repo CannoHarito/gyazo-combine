@@ -21,8 +21,7 @@ app.route("/render", renderApp);
 app.route("/auth", authApp);
 app.route("/", indexApp);
 
-// export default app;
-export default { fetch: (req: Request) => app.fetch(req) };
+export default app;
 
 // if (import.meta.main) {
 //   showRoutes(app);
