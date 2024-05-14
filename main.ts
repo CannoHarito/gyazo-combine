@@ -21,9 +21,9 @@ app.route("/render", renderApp);
 app.route("/auth", authApp);
 app.route("/", indexApp);
 
-export default app;
+// export default app;
 
-// if (import.meta.main) {
-//   showRoutes(app);
-//   Deno.serve(app.fetch);
-// }
+if (import.meta.main) {
+  // showRoutes(app);
+  Deno.serve(app.fetch);
+}
