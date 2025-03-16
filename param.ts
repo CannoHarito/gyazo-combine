@@ -11,7 +11,9 @@ interface Params {
 }
 const validColorCode = (str: string) => {
   if (str.startsWith("#")) str = str.slice(1);
-  return /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(str) && `#${str}`;
+  return /^[0-9a-fA-F]+$/.test(str) &&
+    [3, 4, 6, 8].includes(str.length) &&
+    `#${str}`;
 };
 const getParams = (query: Record<string, string>): Params => {
   const name = query.filename || "combine.png";

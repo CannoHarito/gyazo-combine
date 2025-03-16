@@ -1,21 +1,18 @@
 {
   "tasks": {
-    "savelist": "deno run --env --allow-env --allow-net --allow-read --allow-write saveList.ts",
-    "dev": "deno serve --watch --env --allow-env --allow-net --allow-read main.ts",
-    "check": "deno fmt --check&&deno lint"
+    "savelist": "deno run --env -NRWE saveList.ts",
+    "dev": "deno serve --watch --env -NRE main.ts",
+    "check": "deno fmt --check && deno lint"
   },
   "imports": {
-    "hono/": "https://deno.land/x/hono@v4.3.6/",
-    "hono/jsx/jsx-runtime": "https://deno.land/x/hono@v4.3.6/jsx/jsx-runtime.ts",
-    "hono/jsx/dom/jsx-runtime": "https://deno.land/x/hono@v4.3.6/jsx/dom/jsx-runtime.ts",
-    "canvas/": "https://deno.land/x/canvas@v1.4.1/"
+    "@hono/hono": "jsr:@hono/hono@^4.7.4",
+    "@gfx/canvas-wasm": "jsr:@gfx/canvas-wasm@^0.4.2",
+    "@brc-dd/iron": "jsr:@brc-dd/iron@^1.2.1",
+    "@cmd-johnson/oauth2-client": "jsr:@cmd-johnson/oauth2-client@^2.0.0"
   },
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
-    "types": [
-      "./type.d.ts"
-    ]
+    "jsx": "precompile",
+    "jsxImportSource": "@hono/hono/jsx"
   },
   "exclude": [
     "./static/",

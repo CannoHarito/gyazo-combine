@@ -1,5 +1,6 @@
-import { Hono, HTTPException } from "hono/mod.ts";
-import { html } from "hono/helper.ts";
+import { Hono } from "@hono/hono";
+import { HTTPException } from "@hono/hono/http-exception";
+import { html } from "@hono/hono/html";
 import { parseToken } from "../token.ts";
 import { upload } from "../gyazo.ts";
 import { getParams, parseIds } from "../param.ts";

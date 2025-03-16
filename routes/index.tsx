@@ -1,7 +1,8 @@
-import { Hono, HTTPException } from "hono/mod.ts";
-import { css, html, raw } from "hono/helper.ts";
+import { Hono } from "@hono/hono";
+import { HTTPException } from "@hono/hono/http-exception";
+import { html, raw } from "@hono/hono/html";
 import { parseToken } from "../token.ts";
-import { getImages, upload } from "../gyazo.ts";
+import { getImages } from "../gyazo.ts";
 import { parseIds } from "../param.ts";
 import Form from "../components/form.tsx";
 import Picker, { pickerClass } from "../components/picker.tsx";
@@ -50,7 +51,7 @@ app.get("/picker", parseToken, async (c) => {
   const res = await getImages({ accessToken });
   // const res = await Promise.resolve({ ok: true, value: [], error: "" });
   if (res.ok) {
-    c.var.setToken?.(c);
+    c.var.setToken?.();
     return c.html(<Picker images={res.value.filter((i) => i.image_id)} />);
   }
   throw new HTTPException(400, { message: res.error });

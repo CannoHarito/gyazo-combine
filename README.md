@@ -13,4 +13,3 @@ deno task dev
 
 - takker99/deno-gyazo https://github.com/takker99/deno-gyazo
 - swfz/deno-terminal-image https://github.com/swfz/deno-terminal-image
-- cloudconvert https://cloudconvert.com/svg-to-ico .icoファイルの作成

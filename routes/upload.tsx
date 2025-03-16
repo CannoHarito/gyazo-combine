@@ -1,12 +1,11 @@
-import { HTTPException } from "hono/mod.ts";
-import { createFactory } from "hono/helper.ts";
+import { HTTPException } from "@hono/hono/http-exception";
+import { createHandlers } from "../factory.ts";
 import { parseToken } from "../token.ts";
 
-const factory = createFactory();
-export default factory.createHandlers(parseToken, (c) => {
+export default createHandlers(parseToken, (c) => {
   if (!c.var.token) throw new HTTPException(401, { message: "invalid" });
   return c.render(
-    <form method="POST" action="/images" enctype="multipart/form-data">
+    <form method="post" action="/images" enctype="multipart/form-data">
       <input
         type="file"
         name="imageData[]"
@@ -14,7 +13,7 @@ export default factory.createHandlers(parseToken, (c) => {
         multiple
         required
       />
-      <button>まとめてGyazoにアップロード</button>
+      <button type="submit">まとめてGyazoにアップロード</button>
     </form>,
   );
 });

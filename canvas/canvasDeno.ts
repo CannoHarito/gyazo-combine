@@ -1,4 +1,4 @@
-import { createCanvas, Image, loadImage } from "canvas/mod.ts";
+import { createCanvas, Image, loadImage } from "@gfx/canvas-wasm";
 import type { Source as _Source } from "./util.ts";
 
 type Source<T = Image> = _Source<T>;

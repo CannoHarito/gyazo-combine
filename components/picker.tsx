@@ -1,12 +1,13 @@
-import { css, html } from "hono/helper.ts";
-import { FC } from "hono/jsx/index.ts";
+import { html } from "@hono/hono/html";
+import { css } from "@hono/hono/css";
+import { FC } from "@hono/hono/jsx";
 import type { GyazoImage } from "../gyazo.ts";
 
 interface Props {
   images?: GyazoImage[];
 }
 const ImagePanel = (
-  { image_id, type, created_at, metadata: { title, desc } }: GyazoImage,
+  { image_id, type, metadata: { title } }: GyazoImage,
 ) => {
   const id = `${image_id}.${type}`;
   return (
@@ -18,7 +19,7 @@ const ImagePanel = (
   );
 };
 const Picker: FC<Props> = ({ images = [] }) => {
-  return <>{images.map((i) => <ImagePanel {...i} />)}</>;
+  return <>{images.map((i) => <ImagePanel key={i.image_id} {...i} />)}</>;
 };
 export default Picker;
 export const pickerClass = css`

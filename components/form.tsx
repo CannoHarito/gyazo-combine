@@ -1,5 +1,5 @@
-import { css } from "hono/helper.ts";
-import type { Child } from "hono/jsx/index.ts";
+import { css } from "@hono/hono/css";
+import type { Child } from "@hono/hono/jsx";
 
 const flexColumn = css`
   display: flex;
@@ -9,17 +9,21 @@ const flexColumn = css`
 const flexRow = css`
   display: flex;
   flex-wrap: wrap;
-  &>*{
+  & > * {
     flex-grow:1;
   }
 `;
 
 const formClass = css`
   ${flexColumn}
-  input[type=number]{
+  input[type="number"] {
     width: 4em;
+    text-align: center;
   }
-  textarea{
+  input[type="color"] {
+    width: 100%;
+  }
+  textarea {
     resize: vertical;
   }
 `;
@@ -31,7 +35,7 @@ const previerClass = css`
 export default function Form() {
   return (
     <>
-      <form name="render" method="GET" action="/render" class={formClass}>
+      <form name="render" method="get" action="/render" class={formClass}>
         <div class={flexRow}>
           <fieldset>
             <legend>
@@ -45,12 +49,8 @@ export default function Form() {
               <input type="number" name="size-h" value={1080} />
             </Radio>
             <Radio name="size" value="c" label="クロップ">
-              <span>
-                縦<input type="number" name="size-c-w" value={1920} />
-              </span>
-              <span>
-                横<input type="number" name="size-c-h" value={1080} />
-              </span>
+              横<input type="number" name="size-c-w" value={1920} />
+              縦<input type="number" name="size-c-h" value={1080} />
             </Radio>
           </fieldset>
           <fieldset>
@@ -72,7 +72,7 @@ export default function Form() {
                   type="checkbox"
                   name="trim-cache"
                   checked
-                />検査結果をキャッシュ
+                />同じサイズならスキップ
               </label>
             </div>
           </fieldset>
@@ -82,12 +82,8 @@ export default function Form() {
             </legend>
             <Radio name="crop" value="o" label="オリジナル"></Radio>
             <Radio name="crop" value="r" label="比率を指定" checked>
-              <span>
-                横<input type="number" name="crop-r-w" value={16} />
-              </span>
-              <span>
-                縦<input type="number" name="crop-r-h" value={9} />
-              </span>
+              横<input type="number" name="crop-r-w" value={16} />
+              縦<input type="number" name="crop-r-h" value={9} />
             </Radio>
             <Radio name="crop" value="n" label="N枚目を基準">
               <input type="number" name="crop-n" value={1} />
@@ -104,8 +100,8 @@ export default function Form() {
         </div>
         <textarea id="$ids" name="ids" style="width:100%" rows={8}></textarea>
         <div class={flexRow}>
-          <button>結合画像表示</button>
-          <button formmethod="POST" disabled id="$upload">
+          <button type="submit">結合画像表示</button>
+          <button type="submit" formmethod="post" disabled id="$upload">
             Gyazoにアップロード
           </button>
         </div>
@@ -115,12 +111,6 @@ export default function Form() {
   );
 }
 
-const marginClass = css`
-  & > *:not(:first-child){
-    margin-left:1em;
-  }
-`;
-
 interface RadioOption {
   name: string;
   value: string;
@@ -129,7 +119,7 @@ interface RadioOption {
   children?: Child;
 }
 const Radio = ({ children, label, ...init }: RadioOption) => (
-  <div class={marginClass}>
+  <div class={flexRow}>
     <label>
       <input type="radio" {...init} />
       {label}
