@@ -11,10 +11,10 @@ async function decrypt(password: string, encrypted: string) {
   return await Iron.unseal(crypto, encrypted, password, Iron.defaults);
 }
 
-const tokenCookieName = "__Host-token" as const;
+const tokenCookieName = "token" as const;
 const tokenCookieOptions = {
   httpOnly: true,
-  secure: true,
+  prefix: "host",
   sameSite: "Strict",
   maxAge: 60 * 60 * 24 * 45, //45days
 } as const;
@@ -33,7 +33,11 @@ const deleteToken = (c: Context) =>
 
 const parseToken = createMiddleware(
   async (c, next) => {
-    const tokenCookie = getCookie(c, tokenCookieName);
+    const tokenCookie = getCookie(
+      c,
+      tokenCookieName,
+      tokenCookieOptions.prefix,
+    );
     if (tokenCookie) {
       const token = await decrypt(tokenCookieSecret, tokenCookie) as string;
       c.set("token", token);

@@ -1,11 +1,7 @@
 import { createApp } from "../factory.ts";
 import { HTTPException } from "@hono/hono/http-exception";
 import { parseToken } from "../token.ts";
-import { getImages, upload } from "../gyazo.ts";
-
-const validFiles = (arg: unknown | unknown[]) =>
-  (Array.isArray(arg) ? arg : [arg])
-    .filter((f): f is File => f && f instanceof File);
+import { getImage, getImages } from "../gyazo.ts";
 
 const app = createApp()
   .use(parseToken, async (c, next) => {
@@ -21,29 +17,14 @@ const app = createApp()
     }
     throw new HTTPException(400, { message: res.error });
   })
-  .post("/", async (c) => {
+  .get("/:imageId", async (c) => {
     const accessToken = c.var.token!;
-    const body = await c.req.parseBody({ all: true });
-    const images = validFiles(body["imageData[]"]);
-    if (images.length) {
-      images.sort((a, b) => a.name.localeCompare(b.name));
-      const uploaded = [];
-      for (const image of images) {
-        const options = { accessToken, title: image.name, app: "GyazoCombine" };
-        const res = await upload(image, options);
-        if (!res.ok) {
-          throw new HTTPException(400, {
-            res: c.json(
-              { error: res.error, failed: image.name, uploaded },
-              400,
-            ),
-          });
-        }
-        uploaded.push(res.value);
-      }
+    const imageId = c.req.param("imageId");
+    const res = await getImage(imageId, { accessToken });
+    if (res.ok) {
       c.var.setToken?.();
-      return c.json(uploaded, 201);
+      return c.json(res.value);
     }
-    throw new HTTPException(400, { message: "imageDate[]:File[] is required" });
+    throw new HTTPException(400, { message: res.error });
   });
 export default app;

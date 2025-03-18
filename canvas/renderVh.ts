@@ -5,7 +5,7 @@ import { drawColumn } from "./draw.ts";
 import { trimAll } from "./trim.ts";
 import { cropAll, getCanvasOrigin } from "./crop.ts";
 
-export const injectRenderVH = <T, C extends CanvasLike<T>>(
+export const injectRenderVH = <T, C extends CanvasLike<T> = CanvasLike<T>>(
   getSource: (id: string) => Promise<Source<T>>,
   createCanvas: (width: number, height: number) => C,
 ) =>
