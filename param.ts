@@ -16,7 +16,7 @@ const validColorCode = (str: string) => {
     `#${str}`;
 };
 const getParams = (query: Record<string, string>): Params => {
-  const name = query.filename || "combine.png";
+  const name = query.filename || `combine_${timestamp()}.png`;
   const width = +(query.width ?? (
     "w" == query.size && query["size-w"] ||
     "c" == query.size && query["size-c-w"] ||
@@ -53,7 +53,9 @@ const parseIds = (idStr: string): string[][] =>
     .split(/\n?;\n?/).map((lineStr) =>
       lineStr.split(/\n?[ \t+]\n?|\n/).map((id) => id || "dummy")
     );
-
+const timestamp = ({ date = new Date(), delimiter = "_" } = {}) =>
+  date.toLocaleString("sv-SE", { timeZone: "Asia/Tokyo" })
+    .replaceAll(/[:-]/g, "").replaceAll(/\s/g, delimiter);
 const getDatetime = (str: string) => {
   let obj: { [k: string]: string } = {};
   // gフラグはlastIndexを使うため

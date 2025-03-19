@@ -22,7 +22,10 @@ app.get("/:filename?", async (c) => {
   const { canvas } = await renderVH(colIds, params);
   if (canvas) {
     c.header("Content-Type", "image/png");
-    c.header("Content-Disposition", `inline; filename="${params.name}"`);
+    c.header(
+      "Content-Disposition",
+      `inline; filename*=UTF-8''${encodeURI(params.name)}`,
+    );
     return c.body(canvas.toBuffer("image/png"));
   }
   throw new HTTPException(400);

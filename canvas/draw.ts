@@ -21,7 +21,7 @@ const drawColumn = <T>(
   w ??= h
     ? int(h / sources.reduce((sum, s) => sum + s.h / s.w, 0))
     : sources[0].w;
-  console.debug("col", { x, y, w });
+  // console.debug("col", { x, y, w });
   let colH = 0;
   for (const source of sources) {
     const { h } = drawImage(ctx, source, { x, y, w });
