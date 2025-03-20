@@ -3,11 +3,6 @@ import type { PropsWithChildren } from "@hono/hono/jsx";
 import { raw } from "@hono/hono/html";
 import { parseIds } from "../param.ts";
 
-const flexColumn = css`
-  display: flex;
-  flex-direction: column;
-`;
-
 const flexRow = css`
   display: flex;
   flex-wrap: wrap;
@@ -17,7 +12,9 @@ const flexRow = css`
 `;
 
 const formClass = css`
-  ${flexColumn}
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
   input[type="number"] {
     width: 4em;
     text-align: center;
@@ -27,6 +24,28 @@ const formClass = css`
   }
   textarea {
     resize: vertical;
+  }
+`;
+const buttonClass = css`
+  display: inline-block;
+  padding: 0.375em 0.75em;
+  margin: 0 0.5em;
+  color: #fff;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-color: #0d6efe;
+  border-radius: 0.375em;
+  border: none;
+  &:hover {
+    background-color: #0b5ed7;
+  }
+`;
+const button2ndClass = css`
+  ${buttonClass}
+  background-color: #6c757d;
+  &:hover {
+    background-color: #5c636a;
   }
 `;
 const previerClass = css`
@@ -88,8 +107,14 @@ export default function Form() {
       >
       </textarea>
       <div class={flexRow}>
-        <button type="submit">結合画像表示</button>
-        <button type="submit" formmethod="post" disabled id="$upload">
+        <button type="submit" class={button2ndClass}>結合画像表示</button>
+        <button
+          type="submit"
+          formmethod="post"
+          disabled
+          id="$upload"
+          class={buttonClass}
+        >
           Gyazoにアップロード
         </button>
       </div>

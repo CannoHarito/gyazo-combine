@@ -1,4 +1,5 @@
 import { HTTPException } from "@hono/hono/http-exception";
+import { css } from "@hono/hono/css";
 import { createApp } from "../factory.ts";
 import { parseToken } from "../token.ts";
 import { upload } from "../gyazo.ts";
@@ -6,6 +7,20 @@ import { upload } from "../gyazo.ts";
 const validFiles = (arg: unknown | unknown[]) =>
   (Array.isArray(arg) ? arg : [arg])
     .filter((f): f is File => f && f instanceof File);
+const buttonClass = css`
+  width: 100%;
+  display: inline-block;
+  padding: 0.375em 0.75em;
+  color: #fff;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-color: #0d6efe;
+  border-radius: 0.375em;
+  &:hover {
+    background-color: #0b5ed7;
+  }
+`;
 
 const app = createApp()
   .use(parseToken, async (c, next) => {
@@ -19,7 +34,7 @@ const app = createApp()
         action="/upload"
         enctype="multipart/form-data"
       >
-        <label role="button">
+        <label role="button" class={buttonClass}>
           まとめてGyazoにアップロード
           <input
             type="file"
