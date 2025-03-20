@@ -44,6 +44,7 @@ export default jsxRenderer(({ children, title, heads }) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>{title ?? "GyazoCombine"}</title>
       <Style>{globalClass}</Style>
+      <link rel="manifest" href="/static/manifest.json" />
       {heads}
       {`\n\n`}
       <header class={headerClass}>
