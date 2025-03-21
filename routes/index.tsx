@@ -6,22 +6,23 @@ import Form from "../components/form.tsx";
 import Picker, { ImagePanels } from "../components/picker.tsx";
 
 const app = new Hono();
-app.get(parseToken, (c) => {
-  const accessToken = c.var.token;
+app.get((c) => {
   return c.render(
     <>
       <Form />
-      {accessToken ? <Picker /> : (
-        <div>
-          <a href="/auth">Gyazo Api のアクセストークンを取得する</a>
-        </div>
-      )}
+      <Picker />
     </>,
   );
 });
 app.get("/picker", parseToken, async (c) => {
   const accessToken = c.var.token;
-  if (!accessToken) throw new HTTPException(401, { message: "invalid" });
+  if (!accessToken) {
+    return c.html(
+      <div>
+        <a href="/auth">Gyazo Api のアクセストークンを取得する</a>
+      </div>,
+    );
+  }
   const res = await getImages({ accessToken });
   // const res = await Promise.resolve({ ok: true, value: [], error: "" });
   if (res.ok) {
