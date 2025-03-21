@@ -1,5 +1,6 @@
-import { Hono, HTTPException } from "hono/mod.ts";
-import { html } from "hono/helper.ts";
+import { Hono } from "@hono/hono";
+import { HTTPException } from "@hono/hono/http-exception";
+import { html } from "@hono/hono/html";
 import { parseToken } from "../token.ts";
 import { upload } from "../gyazo.ts";
 import { getParams, parseIds } from "../param.ts";
@@ -21,7 +22,10 @@ app.get("/:filename?", async (c) => {
   const { canvas } = await renderVH(colIds, params);
   if (canvas) {
     c.header("Content-Type", "image/png");
-    c.header("Content-Disposition", `inline; filename="${params.name}"`);
+    c.header(
+      "Content-Disposition",
+      `inline; filename*=UTF-8''${encodeURI(params.name)}`,
+    );
     return c.body(canvas.toBuffer("image/png"));
   }
   throw new HTTPException(400);

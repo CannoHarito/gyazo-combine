@@ -1,5 +1,6 @@
-import { Hono, HTTPException } from "hono/mod.ts";
-import { deleteCookie, getCookie, setCookie } from "hono/helper.ts";
+import { Hono } from "@hono/hono";
+import { HTTPException } from "@hono/hono/http-exception";
+import { deleteCookie, getCookie, setCookie } from "@hono/hono/cookie";
 import { deleteToken, getOauth2Client, setEncryptToken } from "../token.ts";
 
 const oauthCookieName = "code_verifier" as const;
@@ -7,7 +8,7 @@ const oauthCookieOptions = { maxAge: 60 * 60, httpOnly: true } as const;
 
 const app = new Hono();
 app.get("/", async (c) => {
-  const client = getOauth2Client(new URL(c.req.url).origin + "/auth");
+  const client = getOauth2Client(new URL("/auth", c.req.url).href);
   const { uri, codeVerifier } = await client.code.getAuthorizationUri();
   setCookie(c, oauthCookieName, codeVerifier, oauthCookieOptions);
   return c.redirect(uri.toString(), 302);
@@ -15,7 +16,7 @@ app.get("/", async (c) => {
 app.get("/callback", async (c) => {
   const codeVerifier = getCookie(c, oauthCookieName);
   if (!codeVerifier) throw new HTTPException(401);
-  const client = getOauth2Client(new URL(c.req.url).origin + "/auth");
+  const client = getOauth2Client(new URL("/auth", c.req.url).href);
   const { accessToken } = await client.code.getToken(c.req.url, {
     codeVerifier,
   });

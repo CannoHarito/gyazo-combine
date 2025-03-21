@@ -1,12 +1,8 @@
-import type { Context } from "hono/mod.ts";
-import {
-  createMiddleware,
-  deleteCookie,
-  getCookie,
-  setCookie,
-} from "hono/helper.ts";
-import { OAuth2Client } from "https://deno.land/x/oauth2_client@v1.0.2/mod.ts";
-import * as Iron from "https://deno.land/x/iron@v0.10.1/mod.ts";
+import { Context } from "@hono/hono";
+import { deleteCookie, getCookie, setCookie } from "@hono/hono/cookie";
+import { OAuth2Client } from "@cmd-johnson/oauth2-client";
+import * as Iron from "@brc-dd/iron";
+import { createMiddleware } from "./factory.ts";
 
 async function encrypt(password: string, payload: object | string) {
   return await Iron.seal(crypto, payload, password, Iron.defaults);
@@ -15,10 +11,10 @@ async function decrypt(password: string, encrypted: string) {
   return await Iron.unseal(crypto, encrypted, password, Iron.defaults);
 }
 
-const tokenCookieName = "__Host-token" as const;
+const tokenCookieName = "token" as const;
 const tokenCookieOptions = {
   httpOnly: true,
-  secure: true,
+  prefix: "host",
   sameSite: "Strict",
   maxAge: 60 * 60 * 24 * 45, //45days
 } as const;
@@ -37,17 +33,20 @@ const deleteToken = (c: Context) =>
 
 const parseToken = createMiddleware(
   async (c, next) => {
-    const tokenCookie = getCookie(c, tokenCookieName);
+    const tokenCookie = getCookie(
+      c,
+      tokenCookieName,
+      tokenCookieOptions.prefix,
+    );
     if (tokenCookie) {
       const token = await decrypt(tokenCookieSecret, tokenCookie) as string;
       c.set("token", token);
       c.set(
         "setToken",
-        (c: Context) =>
-          setCookie(c, tokenCookieName, tokenCookie, tokenCookieOptions),
+        () => setCookie(c, tokenCookieName, tokenCookie, tokenCookieOptions),
       );
     }
-    return next();
+    await next();
   },
 );
 let oauth2Client: OAuth2Client | undefined;
